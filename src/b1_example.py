@@ -146,7 +146,7 @@ class ExampleCommands(bunny1.Bunny1Commands):
             return PRE(eval(arg))
         except Content:
             raise
-        except Exception, e:
+        except Exception as e:
             return PRE("<span style='color: red;'>" + escape(str(e)) + "</span>")
 
     def time(self, arg):

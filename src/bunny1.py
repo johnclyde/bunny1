@@ -169,7 +169,7 @@ class Bunny1(object):
         if method == "_debug":
             try:
                 return self.do_command(arg)
-            except HTTPRedirect, redir:
+            except HTTPRedirect as redir:
                 url = escape(redir.urls[0])
                 return "<code><b>bunny1</b> DEBUG: redirect to <a href='%s'>%s</a></code>" % (url, url)
 
@@ -224,7 +224,7 @@ class Bunny1(object):
                     url = decorator_method(url)
 
                 raise HTTPRedirect(url)
-            except Content, content:
+            except Content as content:
                 cherrypy.response.headers['Content-Type'] = content.content_type
                 return content.html
 
@@ -407,23 +407,23 @@ class Bunny1Commands(object):
                 html += "<b>%s</b> used %d times%s<br />\n" % (escape(method), times, doc_str)
         return html
 
+    def is_exposed_method(name, method):
+        return not name.startswith("__") and callable(method) \
+            and method.__doc__ and not getattr(method, "dont_expose", False) \
+            and not getattr(method, "unlisted", False)
+
     def list(self, arg):
         """show the list of methods you can use or search that list"""
-
-        def is_exposed_method( (name, method) ):
-            return not name.startswith("__") and callable(method) \
-                       and method.__doc__ and not getattr(method, "dont_expose", False) \
-                       and not getattr(method, "unlisted", False)
 
         arg_lower = None
         if arg:
             arg_lower = arg.lower()
             html = ""
-            search_predicate = lambda (name, method): is_exposed_method((name,method)) and \
+            search_predicate = lambda name, method: self.is_exposed_method(name, method) and \
                                (arg_lower in name.lower() or arg_lower in method.__doc__)
         else:
             html = self._popularity_html(10) + "<hr ><b><i>All Commands</i></b><br />"
-            search_predicate = is_exposed_method
+            search_predicate = self.is_exposed_method
 
         attr_names = dir(self)
 
@@ -635,7 +635,9 @@ class PasswordProtectedBunny1(Bunny1):
 
         try:
             password = cherrypy.request.cookie["b1passwd"].value
-        except (AttributeError, KeyError), e:
+        except AttributeError as e:
+            return False
+        except KeyError as e:
             return False
 
         return (password == self.password())
@@ -657,11 +659,11 @@ def main(b1, b1op=Bunny1OptionParser()):
         if options.test_command is not None:
             try:
                 b1._server_mode = "COMMAND_LINE"
-                print b1.do_command(options.test_command)
-            except HTTPRedirect, redir:
+                print(b1.do_command(options.test_command))
+            except HTTPRedirect as redir:
                 # the escape sequences make the output show up yellow on terminals
                 # in the case of a redirect to distinguish from content output
-                print "\033[33m%s:\033[0m %s" % (redir.__class__.__name__, redir)
+                print("\033[33m%s:\033[0m %s" % (redir.__class__.__name__, redir))
         else:
 
             if options.port:
@@ -707,11 +709,11 @@ def main_cgi(b1):
             content_type = cherrypy.response.headers['Content-type']
         else:
             content_type = "text/html"
-        print "Content-type: %s\n" % content_type
-        print response
-    except cherrypy.HTTPRedirect, redir:
+        print("Content-type: %s\n" % content_type)
+        print(response)
+    except cherrypy.HTTPRedirect as redir:
         url = redir.urls[0]
-        print "Location: " + url + "\n\n"
+        print("Location: " + url + "\n\n")
 
 # it doesn't really make sense to run this module as a standalone program
 # but it may be useful for testing in some rare cases
