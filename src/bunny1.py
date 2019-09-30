@@ -1,22 +1,19 @@
 #!/usr/bin/env python
 
-import sys
+import cgi
+import optparse
 import os
 import re
-import cgi
-import urllib
-import optparse
 import socket
-
-from urllib.parse import urlparse, urlsplit
+import sys
+import urllib
 from urllib.parse import quote as q
 from urllib.parse import quote_plus as qp
+from urllib.parse import urlparse, urlsplit
 from xml.sax.saxutils import escape
 
 import cherrypy
-from cherrypy import HTTPRedirect
-from cherrypy import expose
-
+from cherrypy import HTTPRedirect, expose
 
 __doc__ = """
     bunny1 is a tool that lets you write smart bookmarks in python and then
@@ -713,5 +710,3 @@ def main_cgi(b1):
 # but it may be useful for testing in some rare cases
 if __name__ == "__main__":
     main(Bunny1(Bunny1Commands(), Bunny1Decorators()))
-
-
