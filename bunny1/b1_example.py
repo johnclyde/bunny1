@@ -9,8 +9,11 @@ __version__ = "1.1"
 import subprocess
 from urllib.parse import urlparse
 
-from . import bunny1
-from .bunny1 import Content, cherrypy, dont_expose, escape, expose, q, qp
+import bunny1
+from bunny1.bunny1 import (
+    Bunny1, Bunny1Commands, Bunny1Decorators, Content, bunny1_file, cherrypy,
+    dont_expose, escape, expose, main, q, qp, unlisted,
+)
 
 
 def is_int(x):
@@ -21,7 +24,7 @@ def is_int(x):
     except ValueError:
         return False
 
-class ExampleCommands(bunny1.Bunny1Commands):
+class ExampleCommands(Bunny1Commands):
 
     def lol(self, arg):
         """a random lolcat"""
@@ -124,7 +127,7 @@ class ExampleCommands(bunny1.Bunny1Commands):
 
     # unlisted makes it so this command won't show up when listing all
     # commands, but the command can still be used
-    @bunny1.unlisted
+    @unlisted
     def _finger(self, arg):
         """run finger on the host that this is running on"""
         p = subprocess.Popen(["finger", arg], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -181,7 +184,7 @@ class ExampleCommands(bunny1.Bunny1Commands):
     # using content from the filesystem
     def readme(self, arg):
         """shows the contents of the README file for this software"""
-        raise bunny1.PRE(bunny1.bunny1_file("README"))
+        raise PRE(bunny1_file("README"))
 
     @dont_expose
     def _help_html(self, examples=None, name="bunny1"):
@@ -345,7 +348,7 @@ def tld_rewriter(new_tld):
     return expose(lambda url: rewrite_tld(url, new_tld))
 
 
-class ExampleDecorators(bunny1.Bunny1Decorators):
+class ExampleDecorators(Bunny1Decorators):
     """decorators that show switching between TLDs"""
 
     # we don't really need to hardcode these since they should get handled
@@ -376,7 +379,7 @@ class ExampleDecorators(bunny1.Bunny1Decorators):
         # break if we send it a quoted url
         return "http://tinyurl.com/create.php?url=%s" % url
 
-class ExampleBunny(bunny1.Bunny1):
+class ExampleBunny(Bunny1):
     """An example"""
     def __init__(self):
         bunny1.Bunny1.__init__(self, ExampleCommands(), ExampleDecorators())
@@ -388,8 +391,8 @@ class ExampleBunny(bunny1.Bunny1):
     def header_gif(self):
         """the banner GIF for the bunny1 homepage"""
         cherrypy.response.headers["Content-Type"] = "image/gif"
-        return bunny1.bunny1_file("header.gif")
+        return bunny1_file("header.gif")
 
 
 if __name__ == "__main__":
-    bunny1.main(ExampleBunny())
+    main(ExampleBunny())

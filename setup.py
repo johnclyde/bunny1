@@ -11,8 +11,8 @@ setup(
     author_email="bunny1-feedback@lists.facebook.com",
     url="http://www.bunny1.org/",
     packages=["bunny1"],
-    package_dir={"bunny1": "src"},
+    package_dir={"bunny1": "bunny1"},
     package_data={"bunny1": ["README", "LICENSE", "*.gif", "*.ico"]},
-    scripts=["src/b1_example.py", "src/b1_barebones.py"],
+    scripts=["bunny1/b1_example.py", "bunny1/b1_barebones.py"],
     install_requires=["cherrypy>=3.1.0"],
 )
