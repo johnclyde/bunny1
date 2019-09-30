@@ -591,7 +591,6 @@ class Bunny1OptionParser(optparse.OptionParser):
 
     def add_basic_options(self):
         """adds the basic bunny1 options to the parser"""
-        self.add_option("--daemonize", "-d", dest="daemonize", action="store_true", help="run this as a daemon")
         self.add_option("--host", dest="host", help="host to run on (default is the result of socket.gethostname())")
         self.add_option("--port", "-p", dest="port", help="port to run on (default %s)" % DEFAULT_PORT)
         self.add_option("--pidfile", dest="pidfile", help="pidfile to write to")
@@ -680,10 +679,6 @@ def main(b1, b1op=Bunny1OptionParser()):
             else:
                 protocol = "http"
                 b1.base_url = "%s://%s:%s/" % (protocol, host, port)
-
-            if options.daemonize:
-                import daemonize
-                daemonize.daemonize(options.pidfile)
 
             # start the server
             b1.start(port=port, host=options.host, errorlogfile=options.errorlogfile, accesslogfile=options.accesslogfile)
