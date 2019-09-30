@@ -581,7 +581,7 @@ def load(key):
 
 def bunny1_file(name):
     """the binary contents of a file in the same directory as bunny1"""
-    return file(os.path.dirname(__file__) + os.path.sep + name).read()
+    return open(os.path.dirname(__file__) + os.path.sep + name, 'rb').read()
 
 class Bunny1OptionParser(optparse.OptionParser):
     """a class for getting bunny1 options"""
