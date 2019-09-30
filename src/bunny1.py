@@ -8,7 +8,7 @@ import urllib
 import optparse
 import socket
 
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlsplit
 from urllib.parse import quote as q
 from urllib.parse import quote_plus as qp
 from xml.sax.saxutils import escape
@@ -160,7 +160,7 @@ class Bunny1(object):
             arg = self.decorators.default_url()
 
         # if you type in a URL, just go there
-        if urlparse.urlsplit(method)[0]:
+        if urlsplit(method)[0]:
             method = "url"
             arg = raw
 
