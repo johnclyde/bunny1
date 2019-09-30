@@ -17,7 +17,6 @@ import cherrypy
 from cherrypy import HTTPRedirect
 from cherrypy import expose
 
-from itertools import imap, izip, ifilter
 
 __doc__ = """
     bunny1 is a tool that lets you write smart bookmarks in python and then
@@ -432,8 +431,8 @@ class Bunny1Commands(object):
         html += '<table>'
         html += ''.join(
             ['<tr><td><b>%s</b></td><td>%s</td></tr>' % (name, escape(method.__doc__)) for
-             name, method in ifilter(search_predicate,
-                                     izip(attr_names, imap(attr_getter, attr_names)))])
+             name, method in filter(search_predicate,
+                                     zip(attr_names, map(attr_getter, attr_names)))])
         html += '<table>'
 
         raise Content(html)
