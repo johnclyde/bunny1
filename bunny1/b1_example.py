@@ -328,7 +328,7 @@ small {
             return self._b1.do_command(raw[1:-1])
 
         # meta-fallback
-        return bunny1.Bunny1Commands.fallback(self, raw, *a, **k)
+        return Bunny1Commands.fallback(self, raw, *a, **k)
 
 
 def rewrite_tld(url, new_tld):
@@ -382,7 +382,7 @@ class ExampleDecorators(Bunny1Decorators):
 class ExampleBunny(Bunny1):
     """An example"""
     def __init__(self):
-        bunny1.Bunny1.__init__(self, ExampleCommands(), ExampleDecorators())
+        Bunny1.__init__(self, ExampleCommands(), ExampleDecorators())
 
     # an example showing how you can handle URLs that happen before 
     # the querystring by adding methods to the Bunny class instead of 
