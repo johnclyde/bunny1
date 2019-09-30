@@ -6,17 +6,12 @@ An example bunny1 server with some common commands that you might want to use.
 """
 __version__ = "1.1"
 
-import urlparse
 import subprocess
+from urllib.parse import urlparse
 
-import bunny1
-from bunny1 import cherrypy
-from bunny1 import Content
-from bunny1 import q
-from bunny1 import qp
-from bunny1 import expose
-from bunny1 import dont_expose
-from bunny1 import escape
+from . import bunny1
+from .bunny1 import Content, cherrypy, dont_expose, escape, expose, q, qp
+
 
 def is_int(x):
     """tells whether something can be turned into an int or not"""
@@ -398,5 +393,3 @@ class ExampleBunny(bunny1.Bunny1):
 
 if __name__ == "__main__":
     bunny1.main(ExampleBunny())
-
-

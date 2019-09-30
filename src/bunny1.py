@@ -5,12 +5,12 @@ import os
 import re
 import cgi
 import urllib
-import urlparse
 import optparse
 import socket
 
-from urllib import quote as q
-from urllib import quote_plus as qp
+from urllib.parse import urlparse
+from urllib.parse import quote as q
+from urllib.parse import quote_plus as qp
 from xml.sax.saxutils import escape
 
 import cherrypy
